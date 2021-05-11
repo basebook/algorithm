@@ -1,3 +1,5 @@
+import treeProblem.TreeNode;
+
 import java.util.*;
 
 
@@ -8,9 +10,84 @@ public class Main {
        int [][] res=merge(list);
      //   int mid=(int)Math.ceil(((double) 0+(double)3)/2.0);
      //   System.out.println(mid);
-       System.out.println(judgeSquareSum(10));
+      // System.out.println(judgeSquareSum(10));
+        int[] nums={30000,500,100,30000,100,30000,100};
+        String str="3+2*2";
+        System.out.println(calculate(str));
 
     }
+
+    public static int calculate(String s) {
+        Deque<Integer> stack=new LinkedList<>();
+       // char preSign=' ';
+        int num=0;
+        int n=s.length();
+        for(int i=0;i<n;i++) {
+            if (Character.isDigit(s.charAt(i))) {
+                num = num * 10 + s.charAt(i) - '0';
+                System.out.print(num +" ");
+            }
+            if (!Character.isDigit(s.charAt(i)) ) {
+                System.out.println(s.charAt(i)+"abc");
+                switch (s.charAt(i)) {
+                    case '+':
+                        stack.push(num);
+                        break;
+                    case '-':
+                        stack.push(-num);
+                        break;
+                    case '*':
+                        stack.push(stack.pop() * num);
+                        break;
+                    default:
+                        stack.push(stack.pop() / num);
+                        break;
+
+                }
+            }
+
+            num = 0;
+        }
+        int ans = 0;
+        while (!stack.isEmpty()) {
+            ans += stack.pop();
+        }
+
+
+       return ans;
+
+    }
+
+    /*
+     137. 只出现一次的数字 II
+     给你一个整数数组 nums ，除某个元素仅出现 一次 外，其余每个元素都恰出现 三次 。请你找出并返回那个只出现了一次的元素。
+     https://leetcode-cn.com/problems/single-number-ii/
+     */
+    public static int singleNumber(int[] nums) {
+        if (nums.length < 2)
+            return nums[0];
+        int res=-1;
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            if (!map.containsKey(nums[i])) {
+                map.put(nums[i], 1);
+            }
+            else {
+                map.put(nums[i], map.get(nums[i]) + 1);
+            }
+        }
+        for (Map.Entry<Integer,Integer> e:map.entrySet()
+             ) {
+            if(e.getValue()!=3)
+            {
+               res= e.getKey();
+               System.out.println(e.getKey()+"--"+e.getValue()+" ");
+            }
+
+        }
+        return res;
+    }
+
     /* a^2+b^2=c* leetcode 633 */
     public static boolean judgeSquareSum(int c) {
         long left = 0;
@@ -111,31 +188,7 @@ public class Main {
        }
 
    }
-    public static TreeNode increasingBST(TreeNode root) {
-        if(root==null)
-            return root;
-        ArrayList<Integer> list=new ArrayList<>();
-        inOrder(root,list);
-        TreeNode t=new TreeNode(-1);
-        TreeNode next=t;
-        for(int i=0;i<list.size();i++)
-        {
-            next.right=new TreeNode(list.get(i));
-            next=next.right;
-            System.out.println(next.val+" ");
-        }
-        return t;
 
-    }
-    public static  void inOrder(TreeNode root, ArrayList<Integer> list)
-    {
-        if(root==null) {
-            return;
-        }
-        inOrder(root.left,list);
-        list.add(root.val);
-        inOrder(root.right,list);
-    }
     public static int clumsy(int N) {
         Deque<Integer> stack=new LinkedList<Integer>();
         stack.push(N);
